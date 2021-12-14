@@ -167,7 +167,10 @@ static int s6e8aa5x01_ams497hy01_unprepare(struct drm_panel *panel)
 }
 
 static const struct drm_display_mode s6e8aa5x01_ams497hy01_mode = {
-	.clock = (720 + 226 + 20 + 100) * (1280 + 14 + 2 + 8) * 60 / 1000,
+	/* HACK The panel becomes green strips so the framerate is reduced to 50 as
+	 * a workaround.
+	 */
+	.clock = (720 + 226 + 20 + 100) * (1280 + 14 + 2 + 8) * 50 / 1000,
 	.hdisplay = 720,
 	.hsync_start = 720 + 226,
 	.hsync_end = 720 + 226 + 20,
