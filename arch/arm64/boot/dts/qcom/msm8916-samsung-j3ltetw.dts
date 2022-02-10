@@ -109,6 +109,18 @@
 	};
 };
 
+&blsp_i2c4 {
+	status = "okay";
+
+	fuelgauge@71 {
+		compatible = "siliconmitus,sm5703-fg";
+		reg = <0x71>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <121 IRQ_TYPE_EDGE_FALLING>;
+	};
+};
+
 &blsp1_uart2 {
 	status = "okay";
 };
@@ -303,6 +315,14 @@
 &msmgpio {
 	accel_int_default: accel-int-default {
 		pins = "gpio115";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	fg_alert_default: fg-alert-default {
+		pins = "gpio121";
 		function = "gpio";
 
 		drive-strength = <2>;
