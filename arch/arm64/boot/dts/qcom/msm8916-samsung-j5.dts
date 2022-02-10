@@ -19,10 +19,18 @@
 	status = "disabled";
 };
 
+&front_flash_led {
+	ctrl-gpios = <&tlmm 50 GPIO_ACTIVE_HIGH>;
+};
+
 &touchscreen {
 	/* FIXME: Missing sm5703-mfd driver to power up vdd-supply */
 };
 
 &usb_hs_phy {
 	qcom,init-seq = /bits/ 8 <0x1 0x19 0x2 0x0b>;
+};
+
+&vtcam_flash_en_default {
+	pins = "gpio50";
 };
