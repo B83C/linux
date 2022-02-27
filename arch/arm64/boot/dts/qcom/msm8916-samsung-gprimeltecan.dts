@@ -20,3 +20,11 @@
 		};
 	};
 };
+
+&bosch_accel {
+	status = "okay";
+};
+
+&bosch_magn {
+	status = "okay";
+};

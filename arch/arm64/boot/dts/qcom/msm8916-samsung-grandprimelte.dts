@@ -9,3 +9,11 @@
 	compatible = "samsung,grandprimelte", "qcom,msm8916";
 	chassis-type = "handset";
 };
+
+&bosch_accel {
+	status = "okay";
+};
+
+&bosch_magn {
+	status = "okay";
+};
