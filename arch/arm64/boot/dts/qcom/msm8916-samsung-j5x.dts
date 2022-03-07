@@ -177,7 +177,7 @@
 		reg = <0>;
 
 		vdd-supply = <&reg_vdd_lcd_1p8>;
-		power-supply = <&reg_vdd_lcd_3p0>;
+		vdd3p0-supply = <&reg_vdd_lcd_3p0>;
 
 		reset-gpios = <&msmgpio 25 GPIO_ACTIVE_LOW>;
 
