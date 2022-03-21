@@ -159,7 +159,7 @@ static int s6e8aa5x01_ams520kt01_unprepare(struct drm_panel *panel)
 }
 
 static const struct drm_display_mode s6e8aa5x01_ams520kt01_mode = {
-	.clock = (720 + 224 + 20 + 100) * (1280 + 14 + 2 + 8) * 60 / 1000,
+	.clock = (720 + 224 + 20 + 100) * (1280 + 14 + 2 + 8) * 40 / 1000,
 	.hdisplay = 720,
 	.hsync_start = 720 + 224,
 	.hsync_end = 720 + 224 + 20,
