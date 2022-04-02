@@ -21,3 +21,7 @@
 	compatible = "samsung,heatqlte", "qcom,msm8916";
 	chassis-type = "handset";
 };
+
+&panel {
+	compatible = "samsung,s6288a0";
+};
