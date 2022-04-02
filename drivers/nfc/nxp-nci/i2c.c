@@ -35,6 +35,7 @@ struct nxp_nci_i2c_phy {
 
 	struct gpio_desc *gpiod_en;
 	struct gpio_desc *gpiod_fw;
+	struct regulator_bulk_data supplies[1];
 
 	int hard_fault; /*
 			 * < 0 if hardware error occurred (e.g. i2c err)
@@ -296,6 +297,18 @@ static int nxp_nci_i2c_probe(struct i2c_client *client,
 			  NXP_NCI_I2C_MAX_PAYLOAD, &phy->ndev);
 	if (r < 0)
 		return r;
+
+	phy->supplies[0].supply = "pvdd";
+	r = devm_regulator_bulk_get(dev, ARRAY_SIZE(phy->supplies),
+				      phy->supplies);
+	if (r < 0)
+		return dev_err_probe(dev, r, "Failed to get regulators\n");
+
+	r = regulator_bulk_enable(ARRAY_SIZE(phy->supplies), phy->supplies);
+	if (r < 0) {
+		dev_err(dev, "Failed to enable regulators: %d\n", r);
+		return r;
+	}
 
 	r = request_threaded_irq(client->irq, NULL,
 				 nxp_nci_i2c_irq_thread_fn,
