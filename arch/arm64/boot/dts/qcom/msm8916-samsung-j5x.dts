@@ -162,6 +162,19 @@
 		};
 	};
 
+	ktd2692 {
+		compatible = "kinetic,ktd2692";
+		ctrl-gpios = <&msmgpio 85 GPIO_ACTIVE_HIGH>;
+
+		front-flash-led {
+			function = LED_FUNCTION_FLASH;
+			color = <LED_COLOR_ID_WHITE>;
+			led-max-microamp = <300000>;
+			flash-max-microamp = <1500000>;
+			flash-max-timeout-us = <1835000>;
+		};
+	};
+
 	reg_vdd_lcd_1p8: regulator-vdd-lcd-1p8 {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_lcd_1p8";
