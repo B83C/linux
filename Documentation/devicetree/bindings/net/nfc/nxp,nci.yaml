@@ -24,6 +24,9 @@ properties:
   firmware-gpios:
     description: Output GPIO pin used to enter firmware download mode
 
+  vddio-supply:
+    description: Optional regulator used for some PN547 controller
+
   interrupts:
     maxItems: 1
 
