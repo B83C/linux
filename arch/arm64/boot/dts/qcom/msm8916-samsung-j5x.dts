@@ -48,6 +48,15 @@
 		       "0", "0", "-1";
 };
 
+&fuelgauge {
+	interrupts = <21 IRQ_TYPE_EDGE_FALLING>;
+};
+
+&i2c_fg {
+	sda-gpios = <&msmgpio 16 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+	scl-gpios = <&msmgpio 17 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+};
+
 &panel {
 	compatible = "samsung,s6e8aa5x01-ams520kt01";
 	vdd-supply = <&reg_vdd_lcd_1p8>;
@@ -87,6 +96,14 @@
 
 &accel_int_default {
 	pins = "gpio49";
+};
+
+&fg_alert_default {
+	pins = "gpio21";
+};
+
+&fg_i2c_default {
+	pins = "gpio16", "gpio17";
 };
 
 &muic_int_default {
