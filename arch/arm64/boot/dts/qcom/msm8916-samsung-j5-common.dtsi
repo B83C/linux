@@ -6,6 +6,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	aliases {
@@ -72,6 +73,13 @@
 		};
 	};
 
+	haptics {
+		compatible = "regulator-haptic";
+		haptic-supply = <&sm5703_ldo2>;
+		min-microvolt = <3300000>;
+		max-microvolt = <3300000>;
+	};
+
 	i2c_fg: i2c-fg {
 		compatible = "i2c-gpio";
 
@@ -94,6 +102,88 @@
 
 			pinctrl-names = "default";
 			pinctrl-0 = <&fg_alert_default>;
+		};
+	};
+
+	i2c-mfd {
+		compatible = "i2c-gpio";
+
+		sda-gpios = <&msmgpio 22 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&msmgpio 23 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&regulator_i2c_default>;
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		mfd@49 {
+			compatible = "siliconmitus,sm5703-mfd";
+			reg = <0x49>;
+
+			reset-gpio = <&msmgpio 24 GPIO_ACTIVE_HIGH>;
+			pinctrl-0 = <&mrstb_default>;
+
+			regulator {
+				compatible = "siliconmitus,sm5703-regulator";
+
+				regulators {
+					sm5703_ldo1: ldo1 {
+						regulator-min-microvolt = <2800000>;
+						regulator-max-microvolt = <2800000>;
+					};
+
+					sm5703_ldo2: ldo2 {
+						regulator-min-microvolt = <1500000>;
+						regulator-max-microvolt = <3300000>;
+					};
+
+					sm5703_ldo3: ldo3 {
+						regulator-min-microvolt = <3300000>;
+						regulator-max-microvolt = <3300000>;
+					};
+
+					sm5703_usbldo1: usbldo1 {
+						regulator-min-microvolt = <4800000>;
+						regulator-max-microvolt = <4800000>;
+					};
+
+					sm5703_usbldo2: usbldo2 {
+						regulator-min-microvolt = <4800000>;
+						regulator-max-microvolt = <4800000>;
+					};
+
+					sm5703_vbus: vbus {
+						regulator-min-microvolt = <4800000>;
+						regulator-max-microvolt = <4800000>;
+					};
+
+					sm5703_buck: buck {
+						regulator-min-microvolt = <1500000>;
+						regulator-max-microvolt = <1500000>;
+					};
+				};
+			};
+
+			flash {
+				compatible = "siliconmitus,sm5703-flash";
+
+				flash-gpio = <&msmgpio 34 GPIO_ACTIVE_HIGH>;
+				torch-gpio = <&msmgpio 36 GPIO_ACTIVE_HIGH>;
+
+				back-led {
+					function = LED_FUNCTION_FLASH;
+					color = <LED_COLOR_ID_WHITE>;
+					led-max-microamp = <170000>;
+					flash-max-microamp = <1200000>;
+				};
+			};
+
+			charger {
+				compatible = "siliconmitus,sm5703-charger";
+				siliconmitus,enable-autoset;
+				siliconmitus,enable-autostop;
+			};
 		};
 	};
 
@@ -219,6 +309,7 @@
 &usb {
 	status = "okay";
 	extcon = <&muic>, <&muic>;
+	vbus-supply = <&sm5703_vbus>;
 };
 
 &usb_hs_phy {
@@ -399,6 +490,14 @@
 		};
 	};
 
+	mrstb_default: mrstb-default {
+		pins = "gpio24";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 	muic_i2c_default: muic-i2c-default {
 		pins = "gpio105", "gpio106";
 		function = "gpio";
@@ -409,6 +508,14 @@
 
 	muic_int_default: muic-int-default {
 		pins = "gpio12";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	regulator_i2c_default: regulator-i2c-default {
+		pins = "gpio22", "gpio23";
 		function = "gpio";
 
 		drive-strength = <2>;
