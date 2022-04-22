@@ -20,6 +20,19 @@
 	};
 
 	/delete-node/ gpio-hall-sensor;
+
+	reg_vdd_tsp_a: regulator-vdd-tsp-a {
+		compatible = "regulator-fixed";
+		regulator-name = "vdd_tsp_a";
+		regulator-min-microvolt = <3000000>;
+		regulator-max-microvolt = <3000000>;
+
+		gpio = <&msmgpio 16 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&tsp_ldo_en_default>;
+	};
 };
 
 &i2c_muic {
@@ -46,10 +59,24 @@
 	power-supply = <&pm8916_l17>;
 };
 
+&touchscreen {
+	vdd-supply = <&reg_vdd_tsp_a>;
+};
+
 &smd_rpm_regulators {
 	l17 {
 		regulator-min-microvolt = <3000000>;
 		regulator-max-microvolt = <3000000>;
+	};
+};
+
+&msmgpio {
+	tsp_ldo_en_default: tsp-ldo-en-default {
+		pins = "gpio16";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
 	};
 };
 
