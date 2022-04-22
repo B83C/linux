@@ -72,6 +72,31 @@
 		};
 	};
 
+	i2c_fg: i2c-fg {
+		compatible = "i2c-gpio";
+
+		sda-gpios = <&msmgpio 14 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+		scl-gpios = <&msmgpio 15 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&fg_i2c_default>;
+		status = "okay";
+
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		fuelgauge: fuelgauge@71 {
+			compatible = "siliconmitus,sm5703-fg";
+			reg = <0x71>;
+
+			interrupt-parent = <&msmgpio>;
+			interrupts = <121 IRQ_TYPE_EDGE_FALLING>;
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&fg_alert_default>;
+		};
+	};
+
 	i2c_muic: i2c-muic {
 		compatible = "i2c-gpio";
 		sda-gpios = <&msmgpio 105 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
@@ -412,6 +437,22 @@
 &msmgpio {
 	accel_int_default: accel-int-default {
 		pins = "gpio115";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	fg_alert_default: fg-alert-default {
+		pins = "gpio121";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	fg_i2c_default: fg-i2c-default {
+		pins = "gpio14", "gpio15";
 		function = "gpio";
 
 		drive-strength = <2>;
