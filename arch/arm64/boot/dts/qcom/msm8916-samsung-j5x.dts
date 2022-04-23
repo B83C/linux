@@ -9,31 +9,17 @@
 	compatible = "samsung,j5x", "qcom,msm8916";
 	chassis-type = "handset";
 
-	reg_vdd_lcd_1p8: regulator-vdd-lcd-1p8 {
+	reg_vdd_tsp_a: regulator-vdd-tsp-a {
 		compatible = "regulator-fixed";
-		regulator-name = "vdd_lcd_1p8";
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-		vin-supply = <&pm8916_s4>;
-
-		gpio = <&msmgpio 69 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&lcd_ldo_en_default>;
-	};
-
-	reg_vdd_lcd_3p0: regulator-vdd-lcd-3p0 {
-		compatible = "regulator-fixed";
-		regulator-name = "vdd_lcd_3p0";
+		regulator-name = "vdd_tsp_a";
 		regulator-min-microvolt = <3000000>;
 		regulator-max-microvolt = <3000000>;
 
-		gpio = <&msmgpio 115 GPIO_ACTIVE_HIGH>;
+		gpio = <&msmgpio 108 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&lcd_3v_ldo_en_default>;
+		pinctrl-0 = <&tsp_ldo_en_default>;
 	};
 };
 
@@ -59,12 +45,14 @@
 
 &panel {
 	compatible = "samsung,s6e8aa5x01-ams520kt01";
-	vdd-supply = <&reg_vdd_lcd_1p8>;
-	power-supply = <&reg_vdd_lcd_3p0>;
 };
 
 &muic {
 	interrupts = <121 IRQ_TYPE_EDGE_FALLING>;
+};
+
+&touchscreen {
+	vdd-supply = <&reg_vdd_tsp_a>;
 };
 
 &smd_rpm_regulators {
@@ -76,22 +64,13 @@
 
 
 &msmgpio {
-	lcd_ldo_en_default: lcd-ldo-en-default {
-		pins = "gpio69";
+	tsp_ldo_en_default: tsp-ldo-en-default {
+		pins = "gpio108";
 		function = "gpio";
 
 		drive-strength = <2>;
 		bias-disable;
 	};
-
-	lcd_3v_ldo_en_default: lcd-3v-ldo-en-default {
-		pins = "gpio115";
-		function = "gpio";
-
-		drive-strength = <2>;
-		bias-disable;
-	};
-
 };
 
 &accel_int_default {
