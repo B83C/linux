@@ -62,6 +62,20 @@
 		pinctrl-0 = <&backlight_pwm_default>;
 	};
 
+	reg_proximity_vled: regulator-proximity-vled {
+		compatible = "regulator-fixed";
+		regulator-name = "proximity_led";
+		regulator-min-microvolt = <3000000>;
+		regulator-max-microvolt = <3000000>;
+
+		gpio = <&msmgpio 8 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		regulator-always-on;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&regulator_proxy_default>;
+	};
+
 	reg_vdd_lcd: regulator-vdd-lcd {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_lcd";
@@ -229,6 +243,20 @@
 			       "0",  "0", "-1";
 
 		status = "disabled";
+	};
+
+	proximity-sensor@44 {
+		compatible = "sharp,gp2ap002s00f";
+		reg = <0x44>;
+		interrupt-parent = <&msmgpio>;
+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+		vdd-supply = <&pm8916_l17>;
+		vio-supply = <&pm8916_l5>;
+		sharp,proximity-far-hysteresis = /bits/ 8 <0x2f>;
+		sharp,proximity-close-hysteresis = /bits/ 8 <0x0f>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_int_default>;
 	};
 };
 
@@ -568,6 +596,22 @@
 
 	nfc_i2c_default: nfc-i2c-default {
 		pins = "gpio0", "gpio1";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	regulator_proxy_default: regulator-proxy-default {
+		pins = "gpio8";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	proxy_int_default: proxy-int-default {
+		pins = "gpio113";
 		function = "gpio";
 
 		drive-strength = <2>;
