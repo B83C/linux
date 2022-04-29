@@ -60,3 +60,11 @@
 	/delete-property/ backlight;
 	compatible = "samsung,cprime-panel";
 };
+
+&st_accel {
+	status = "okay";
+	compatible = "st,lis2hh12";
+	mount-matrix = "1",  "0", "0",
+		       "0", "-1", "0",
+		       "0",  "0", "1";
+};
