@@ -19,6 +19,7 @@ obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-s6d78a0-gh9607501a.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-s6d7aa0-lsl080al03.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-s6d7aa0-ltl101at01.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-s6e88a0-ams427ap24.o
+obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-sc7798a-bv045wvm.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-samsung-tc358764-ltl101al06.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-wingtech-auo-nt35521.o
 obj-$(CONFIG_DRM_PANEL_MSM8916_GENERATED) += panel-wingtech-auo-r61308.o
