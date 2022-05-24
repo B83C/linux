@@ -30,6 +30,10 @@
 	scl-gpios = <&msmgpio 17 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 };
 
+&ktd2692 {
+	ctrl-gpios = <&msmgpio 85 GPIO_ACTIVE_HIGH>;
+};
+
 &muic {
 	interrupts = <121 IRQ_TYPE_EDGE_FALLING>;
 };
