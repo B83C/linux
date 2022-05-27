@@ -34,6 +34,7 @@
 #define IST3038_DIRECT_ACCESS		(1 << 31)
 #define IST3038B_REG_STATUS		0x20
 #define IST3038B_REG_CHIPID		(0x40000000 | IST3038_DIRECT_ACCESS)
+#define IST30XXB_REG_TSPTYPE		(0x40002010 | IST3038_DIRECT_ACCESS)
 #define IST3038B_WHOAMI			0x300b300b
 
 #define IST3038_WHOAMI			0x30383038
@@ -272,7 +273,7 @@ static int imagis_probe(struct i2c_client *i2c)
 {
 	struct device *dev = &i2c->dev;
 	struct imagis_ts *ts;
-	int chip_id, error;
+	int chip_id, tsp_type, error;
 
 	ts = devm_kzalloc(dev, sizeof(*ts), GFP_KERNEL);
 	if (!ts)
@@ -309,6 +310,13 @@ static int imagis_probe(struct i2c_client *i2c)
 		dev_err(dev, "chip ID read failure: %d\n", error);
 		return error;
 	}
+	error = imagis_i2c_read_reg(ts, IST30XXB_REG_TSPTYPE, &tsp_type);
+	if (error) {
+		dev_err(dev, "tsp type read failure: %d\n", error);
+		return error;
+	}
+
+	dev_err(dev, "IC: %x, tsp_type: %x", chip_id, ((tsp_type >> 1) & 0xF));
 
 	if (chip_id != ts->tdata->whoami_val) {
 		dev_err(dev, "unknown chip ID: 0x%x\n", chip_id);
