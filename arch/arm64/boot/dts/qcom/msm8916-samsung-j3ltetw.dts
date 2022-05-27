@@ -43,6 +43,10 @@
 	scl-gpios = <&msmgpio 7 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 };
 
+&ktd2692 {
+	status = "disabled";
+};
+
 &panel {
 	vdd3-supply = <&pm8916_l6>;
 	vci-supply = <&reg_vdd_lcd_3p0>;
