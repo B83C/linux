@@ -107,6 +107,10 @@
 	};
 };
 
+&ktd2692 {
+	ctrl-gpios = <&msmgpio 50 GPIO_ACTIVE_HIGH>;
+};
+
 &panel {
 	vdd3-supply = <&reg_vdd_lcd_1p8>;
 	vci-supply = <&pm8916_l17>;
@@ -183,4 +187,8 @@
 
 &nfc_pvdd_en_default {
 	pins = "gpio90";
+};
+
+&vtcam_flash_en_default {
+	pins = "gpio50";
 };
