@@ -122,6 +122,18 @@
 		};
 	};
 
+	reg_pvdd_nfc: regulator-pvdd-nfc {
+		compatible = "regulator-fixed";
+		regulator-name = "pvdd_nfc";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&nfc_pvdd_en_default>;
+	};
+
 	reg_vdd_lcd_1p8: regulator-vdd-lcd-1p8 {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_lcd_1p8";
@@ -163,6 +175,26 @@
 		pinctrl-0 = <&tsp_ldo_en_default>;
 
 		status = "disabled";
+	};
+};
+
+&blsp_i2c1 {
+	status = "okay";
+
+	nfc: nfc@2b {
+		compatible = "nxp,pn547", "nxp,nxp-nci-i2c";
+		reg = <0x2b>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <21 IRQ_TYPE_EDGE_RISING>;
+
+		enable-gpios = <&msmgpio 20 GPIO_ACTIVE_HIGH>;
+		firmware-gpios = <&msmgpio 49 GPIO_ACTIVE_HIGH>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&nfc_default>;
+
+		pvdd-supply = <&reg_pvdd_nfc>;
 	};
 };
 
@@ -451,6 +483,29 @@
 
 	muic_int_default: muic-int-default {
 		pins = "gpio12";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	nfc_default: nfc-default {
+		pins = "gpio20", "gpio49";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+
+		nfc_irq: nfc-irq {
+			pins = "gpio21";
+			function = "gpio";
+
+			drive-strength = <2>;
+			bias-pull-down;
+		};
+	};
+
+	nfc_pvdd_en_default: nfc-pvdd-en-default {
 		function = "gpio";
 
 		drive-strength = <2>;

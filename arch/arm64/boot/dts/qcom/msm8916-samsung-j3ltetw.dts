@@ -48,6 +48,10 @@
 	vci-supply = <&reg_vdd_lcd_3p0>;
 };
 
+&reg_pvdd_nfc {
+	gpio = <&msmgpio 50 GPIO_ACTIVE_HIGH>;
+};
+
 &reg_vdd_lcd_3p0 {
 	status = "okay";
 	vin-supply = <&pm8916_l17>;
@@ -65,6 +69,10 @@
 
 &muic_i2c_default {
 	pins = "gpio0", "gpio1";
+};
+
+&nfc_pvdd_en_default {
+	pins = "gpio50";
 };
 
 &sensors_i2c_default {
