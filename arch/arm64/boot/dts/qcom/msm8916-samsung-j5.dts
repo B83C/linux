@@ -66,7 +66,7 @@
 
 	camera-sensor-back@11 {
 		reg = <0x11>;
-		// compatible = "mipi-ccs-1.0", "mipi-ccs";
+        compatible = "mipi-ccs-1.0", "mipi-ccs";
 		vio-supply = <&pm8916_l16>;
 		vana-supply = <&sm5703_ldo1>;
 		vcore-supply = <&camera_core>;
@@ -87,7 +87,7 @@
 
 	camera-sensor-front@10 {
 		reg = <0x10>;
-		// compatible = "mipi-ccs-1.0", "mipi-ccs";
+        compatible = "mipi-ccs-1.0", "mipi-ccs";
 		vio-supply = <&pm8916_l16>;
 		vana-supply = <&sm5703_ldo1>;
 		vcore-supply = <&camera_core>;
@@ -131,6 +131,50 @@
 
 &wcd_codec {
 	qcom,micbias1-ext-cap;
+};
+
+&msmgpio {
+	camera_regulator_fixed: camera-regulator-fixed {
+		pins = "gpio33";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	camera_front_default_a: camera-front-default-a {
+		rst {
+			pins = "gpio28";
+			function = "gpio";
+
+			drive-strength = <16>;
+			bias-disable;
+		};
+		mclk1 {
+			pins = "gpio27";
+			function = "cam_mclk1";
+
+			drive-strength = <16>;
+			bias-disable;
+		};
+	};
+
+	camera_back_default_a: camera-back-default-a {
+		rst {
+			pins = "gpio35";
+			function = "gpio";
+
+			drive-strength = <16>;
+			bias-disable;
+		};
+		mclk0 {
+			pins = "gpio26";
+			function = "cam_mclk0";
+
+			drive-strength = <16>;
+			bias-disable;
+		};
+	};
 };
 
 &lcd_1p8_ldo_en_default {
