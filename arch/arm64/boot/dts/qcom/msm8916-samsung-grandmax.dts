@@ -108,6 +108,10 @@
 	pinctrl-0 = <&lcd_bl_en_default>;
 };
 
+&proximity {
+	compatible = "capella,cm36686";
+};
+
 &msmgpio {
 	lcd_bl_en_default: lcd-bl-en-default {
 		pins = "gpio98";

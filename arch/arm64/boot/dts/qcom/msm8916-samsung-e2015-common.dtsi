@@ -34,6 +34,19 @@
 			pinctrl-0 = <&muic_int_default>;
 		};
 	};
+
+	reg_proximity_vled: regulator-proximity-vled {
+		compatible = "regulator-fixed";
+		regulator-name = "proximity_led";
+		regulator-min-microvolt = <3000000>;
+		regulator-max-microvolt = <3000000>;
+
+		gpio = <&msmgpio 8 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&regulator_proxy_default>;
+	};
 };
 
 &blsp_i2c2 {
@@ -60,6 +73,21 @@
 			       "0", "-1", "0",
 			       "0", "0", "1";
 	};
+
+	proximity: proximity@60 {
+		compatible = "capella,cm36672p";
+		reg = <0x60>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_int_default>;
+
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l5>;
+		vled-supply = <&reg_proximity_vled>;
+	};
 };
 
 &dsi0 {
@@ -82,6 +110,22 @@
 };
 
 &msmgpio {
+	proxy_int_default: proxy-int-default {
+		pins = "gpio113";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	regulator_proxy_default: regulator-proxy-default {
+		pins = "gpio8";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
 	tsp_int_default: tsp-int-default {
 		pins = "gpio13";
 		function = "gpio";
