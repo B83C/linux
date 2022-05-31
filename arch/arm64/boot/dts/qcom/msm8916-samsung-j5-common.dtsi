@@ -155,6 +155,21 @@
 		};
 	};
 
+	ktd2692: ktd2692 {
+		compatible = "kinetic,ktd2692";
+
+		front-flash-led {
+			function = LED_FUNCTION_FLASH;
+			color = <LED_COLOR_ID_WHITE>;
+			led-max-microamp = <300000>;
+			flash-max-microamp = <1500000>;
+			flash-max-timeout-us = <1835000>;
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&vtcam_flash_en_default>;
+		};
+	};
+
 	reg_pvdd_nfc: regulator-pvdd-nfc {
 		compatible = "regulator-fixed";
 		regulator-name = "pvdd_nfc";
@@ -670,6 +685,13 @@
 	};
 
 	tsp_ldo_en_default: tsp-ldo-en-default {
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	vtcam_flash_en_default: vtcam-flash-en-default {
 		function = "gpio";
 
 		drive-strength = <2>;
