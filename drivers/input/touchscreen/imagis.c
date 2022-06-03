@@ -31,9 +31,12 @@
 #define IST3038C_FINGER_COUNT_SHIFT	12
 #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
 
+#define IST3038_DIRECT_ACCESS		(1 << 31)
 #define IST3038B_REG_STATUS		0x20
-#define IST3038B_REG_CHIPID		0x30
-#define IST3038B_WHOAMI			0x30380b
+#define IST3038B_REG_CHIPID		(0x40000000 | IST3038_DIRECT_ACCESS)
+#define IST3038B_WHOAMI			0x300b300b
+
+#define IST3038_WHOAMI			0x30383038
 
 struct imagis_properties {
 	unsigned int interrupt_msg_cmd;
@@ -363,6 +366,14 @@ static int __maybe_unused imagis_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);
 
+static const struct imagis_properties imagis_3038_data = {
+	.interrupt_msg_cmd = IST3038B_REG_STATUS,
+	.touch_coord_cmd = IST3038B_REG_STATUS,
+	.whoami_cmd = IST3038B_REG_CHIPID,
+	.whoami_val = IST3038_WHOAMI,
+	.protocol_b = true,
+};
+
 static const struct imagis_properties imagis_3038b_data = {
 	.interrupt_msg_cmd = IST3038B_REG_STATUS,
 	.touch_coord_cmd = IST3038B_REG_STATUS,
@@ -380,6 +391,7 @@ static const struct imagis_properties imagis_3038c_data = {
 
 #ifdef CONFIG_OF
 static const struct of_device_id imagis_of_match[] = {
+	{ .compatible = "imagis,ist3038", .data = &imagis_3038_data },
 	{ .compatible = "imagis,ist3038b", .data = &imagis_3038b_data },
 	{ .compatible = "imagis,ist3038c", .data = &imagis_3038c_data },
 	{ },
