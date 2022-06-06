@@ -111,7 +111,7 @@
 		vdd-supply = <&reg_vdd_tsp>;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&tsp_int_default>;
+		pinctrl-0 = <&ts_int_default>;
 	};
 };
 

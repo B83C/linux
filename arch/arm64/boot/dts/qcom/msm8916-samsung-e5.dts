@@ -85,7 +85,7 @@
 		vdd-supply = <&pm8916_l6>;
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&tsp_int_default>;
+		pinctrl-0 = <&ts_int_default>;
 	};
 };
 
