@@ -539,6 +539,14 @@
 		drive-strength = <2>;
 		bias-disable;
 	};
+
+	ts_int_default: ts-int-default {
+		pins = "gpio13";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
 };
 
 &pm8916_gpios {
