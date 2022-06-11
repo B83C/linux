@@ -24,6 +24,19 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&camera_regulator_fixed>;
 	};
+
+	reg_vdd_proxy: regulator-vdd-proximity {
+		compatible = "regulator-fixed";
+		regulator-name = "proximity_led";
+		regulator-min-microvolt = <3000000>;
+		regulator-max-microvolt = <3000000>;
+
+		gpio = <&msmgpio 73 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_ldo_en_default>;
+	};
 };
 
 &accelerometer {
@@ -107,6 +120,22 @@
 	};
 };
 
+&i2c_sensors {
+	proximity-sensor@44 {
+		compatible = "sharp,gp2ap002s00f";
+		reg = <0x44>;
+		interrupt-parent = <&msmgpio>;
+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+		vdd-supply = <&pm8916_l17>;
+		vio-supply = <&pm8916_l5>;
+		sharp,proximity-far-hysteresis = /bits/ 8 <0x2f>;
+		sharp,proximity-close-hysteresis = /bits/ 8 <0x0f>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_int_default>;
+	};
+};
+
 &ktd2692 {
 	ctrl-gpios = <&msmgpio 50 GPIO_ACTIVE_HIGH>;
 };
@@ -118,6 +147,12 @@
 
 &reg_pvdd_nfc {
 	gpio = <&msmgpio 90 GPIO_ACTIVE_HIGH>;
+};
+
+&reg_vdd_proxy {
+	status = "okay";
+	gpio = <&msmgpio 73 GPIO_ACTIVE_HIGH>;
+	regulator-always-on;
 };
 
 &touchscreen {
@@ -179,6 +214,22 @@
 			bias-disable;
 		};
 	};
+
+	proxy_int_default: proxy-int-default {
+		pins = "gpio113";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	proxy_ldo_en_default: proxy-ldo-en-default {
+		pins = "gpio73";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
 };
 
 &lcd_1p8_ldo_en_default {
@@ -187,6 +238,14 @@
 
 &nfc_pvdd_en_default {
 	pins = "gpio90";
+};
+
+&proxy_int_default {
+	pins = "gpio113";
+};
+
+&proxy_ldo_en_default {
+	pins = "gpio73";
 };
 
 &vtcam_flash_en_default {
