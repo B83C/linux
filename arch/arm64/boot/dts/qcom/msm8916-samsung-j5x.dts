@@ -8,6 +8,19 @@
 	model = "Samsung Galaxy J5 (2016)";
 	compatible = "samsung,j5x", "qcom,msm8916";
 	chassis-type = "handset";
+
+	reg_vdd_proxy: regulator-vdd-proximity {
+		compatible = "regulator-fixed";
+		regulator-name = "proximity_led";
+		regulator-min-microvolt = <3000000>;
+		regulator-max-microvolt = <3000000>;
+
+		gpio = <&msmgpio 97 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_ldo_en_default>;
+	};
 };
 
 &accelerometer {
@@ -28,6 +41,23 @@
 &i2c_fg {
 	sda-gpios = <&msmgpio 16 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 	scl-gpios = <&msmgpio 17 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+};
+
+&i2c_sensors {
+	proximity@60 {
+		compatible = "capella,cm36672p";
+		reg = <0x60>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <20 IRQ_TYPE_EDGE_FALLING>;
+
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l5>;
+		vled-supply = <&reg_vdd_proxy>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_int_default>;
+	};
 };
 
 &ktd2692 {
@@ -68,6 +98,24 @@
 &reg_vdd_tsp_a {
 	status = "okay";
 	gpio = <&msmgpio 108 GPIO_ACTIVE_HIGH>;
+};
+
+&msmgpio {
+	proxy_int_default: proxy-int-default {
+		pins = "gpio20";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	proxy_ldo_en_default: proxy-ldo-en-default {
+		pins = "gpio97";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
 };
 
 &accel_int_default {
