@@ -41,6 +41,21 @@
 &i2c_sensors {
 	sda-gpios = <&msmgpio 6 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 	scl-gpios = <&msmgpio 7 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+
+	proximity@60 {
+		compatible = "capella,cm36672p";
+		reg = <0x60>;
+
+		interrupt-parent = <&msmgpio>;
+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+
+		vdd-supply = <&pm8916_l17>;
+		vddio-supply = <&pm8916_l5>;
+		vled-supply = <&pm8916_l17>;
+
+		pinctrl-names = "default";
+		pinctrl-0 = <&proxy_int_default>;
+	};
 };
 
 &ktd2692 {
@@ -65,6 +80,16 @@
 &reg_vdd_tsp_a {
 	status = "okay";
 	gpio = <&msmgpio 16 GPIO_ACTIVE_HIGH>;
+};
+
+&msmgpio {
+	proxy_int_default: proxy-int-default {
+		pins = "gpio113";
+		function = "gpio";
+
+		drive-strength = <2>;
+		bias-disable;
+	};
 };
 
 &lcd_3p0_ldo_en_default {
