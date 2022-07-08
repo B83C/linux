@@ -30,3 +30,7 @@
 		pinctrl-names = "default";
 	};
 };
+
+&panel {
+	compatible = "samsung,cprime-panel";
+};
