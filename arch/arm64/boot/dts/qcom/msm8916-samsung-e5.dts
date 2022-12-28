@@ -47,6 +47,12 @@
 	};
 };
 
+&battery {
+	charge-term-current-microamp = <150000>;
+	constant-charge-current-max-microamp = <1000000>;
+	constant-charge-voltage-max-microvolt = <4350000>;
+};
+
 &blsp_i2c5 {
 	status = "okay";
 
