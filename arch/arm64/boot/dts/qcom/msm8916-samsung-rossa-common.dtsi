@@ -12,7 +12,18 @@
 		interrupts-extended = <&tlmm 12 IRQ_TYPE_EDGE_FALLING>;
 		pinctrl-0 = <&muic_int_default>;
 		pinctrl-names = "default";
+
+		usb_con: connector {
+			compatible = "usb-b-connector";
+			label = "micro-USB";
+			type = "micro";
+		};
 	};
+};
+
+&battery {
+	charge-term-current-microamp = <150000>;
+	constant-charge-current-max-microamp = <700000>;
 };
 
 &blsp_i2c5 {
