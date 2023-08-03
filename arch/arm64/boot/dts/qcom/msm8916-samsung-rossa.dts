@@ -36,5 +36,5 @@
 };
 
 &panel {
-	compatible = "samsung,cprime-panel";
+	compatible = "samsung,rossa-panel";
 };
