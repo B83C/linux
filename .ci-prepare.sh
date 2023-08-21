@@ -30,7 +30,7 @@ clang)
 	MAKE_OPTS="LLVM=1"
 	;;
 esac
-MAKE_OPTS="-j$(nproc) KCFLAGS=\"-Wunused -Wno-unused-variable -Wno-unused-function\" $MAKE_OPTS"
+MAKE_OPTS="-j$(nproc) CC=\"ccache gcc\" KCFLAGS=\"-Wno-unused-variable -Wno-unused-function\" $MAKE_OPTS"
 
 # Write build script
 cat > .ci-build.sh <<EOF
